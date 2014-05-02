@@ -12,9 +12,13 @@ window.App = {
   Models: {},
   Collections: {},
   Views: {},
+  Support: {},
   Routers: {},
   initialize: function() {
-    alert('Hello from Backbone!');
+    window.router = new App.Routers.Apps();
+    window.app = new App.Views.AppsIndex();
+    window.app.render();
+    Backbone.history.start({pushState:false});
   }
 };
 

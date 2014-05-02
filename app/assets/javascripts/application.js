@@ -14,8 +14,11 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require underscore
+//= require TweenMax.min
+//= require q
 //= require backbone-min
 //= require app
+//= require_tree ./helpers
 //= require_tree ../templates
 //= require_tree ./models
 //= require_tree ./collections
