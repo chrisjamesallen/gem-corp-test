@@ -19,5 +19,5 @@
 //= require backbone.marionette
 //= require app
 //= require_tree ./helpers
-//= require_tree ../templates
+//= require_tree ./modules
 //= require_tree .
