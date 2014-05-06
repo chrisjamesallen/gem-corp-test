@@ -15,13 +15,9 @@
 //= require turbolinks
 //= require underscore
 //= require TweenMax.min
-//= require q
 //= require backbone-min
+//= require backbone.marionette
 //= require app
 //= require_tree ./helpers
 //= require_tree ../templates
-//= require_tree ./models
-//= require_tree ./collections
-//= require_tree ./views
-//= require_tree ./routers
 //= require_tree .
