@@ -17,7 +17,7 @@
 //= require TweenMax.min
 //= require backbone-min
 //= require backbone.marionette
-//= require app
-//= require_tree ./helpers
-//= require_tree ./modules
-//= require_tree .
+//= require_tree ./backbone/config
+//= require backbone/app
+//= require_tree ./backbone/entities
+//= require_tree ./backbone/apps

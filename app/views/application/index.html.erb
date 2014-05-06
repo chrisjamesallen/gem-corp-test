@@ -1,0 +1,14 @@
+<div id="Navigation"></div>
+
+<script type="text/javascript">
+  <%#  (render partial: "application/app", formats: [:json]).html_safe  %>
+  window.data = JSON.parse(<%=  (render partial: "application/app", formats: [:json]).to_json.html_safe  %>);
+
+</script>
+
+<%= javascript_tag do %>
+  $(function(){
+    App.start();
+  })
+<% end %>
+

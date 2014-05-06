@@ -10,6 +10,8 @@
   class List.Panel extends Marionette.ItemView
     template: "users/list/template/_panel"
 
+  # A Panel type
+
   class List.User extends Marionette.ItemView
     template: "users/list/template/_user"
     events:
