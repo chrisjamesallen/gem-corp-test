@@ -11,13 +11,30 @@
       App.navigationRegion.show @view
 
     changeRoute: (fragments) ->
+      f = 0;
+      i = 0;
+      fragment;
+      tree = @treeNodes;
+      @newtree = new App.Entities.Collection
+      node = tree #so pick up first fragment
 
+      while node
+         fragment = fragments[f++]
+         if !fragment
+           break;
 
+         node = node.findWhere({ nodeName: fragment })
+         if !node
+           break;
 
-#var tree = new TreeNodeCollection(treeData);
-#var treeView = new TreeRoot({
-#  collection: tree
-#});
+         @newtree.add node
+         #console.log node
 
-#treeView.render();
-#$("#tree").html(treeView.el);
+         if !node.nodes
+           break;
+         node = node.nodes
+
+      if(@newtree.length)
+        @view.collection = @newtree
+        @view.render()
+
