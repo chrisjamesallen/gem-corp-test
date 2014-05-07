@@ -3,7 +3,7 @@
 
   API =
     getNavigationData: ->
-      new Entities.TreeNodeCollection window.data.structure
+      new Entities.TreeNodeCollection window.data
 
   # Set Handlers
 

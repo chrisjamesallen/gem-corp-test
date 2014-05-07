@@ -3,19 +3,24 @@
   List.Controller =
     createNavigation: ->
       @treeNodes = App.request "navigation:entities"
-      @view = new List.TreeRoot { collection: @treeNodes }
+      @regionView = new List.TreeRegion
       window.controller = @
-      @showAsAppRegion()
+      App.navigationRegion = @regionView
+      @view = @createTreeView @treeNodes
+      @show()
 
-    showAsAppRegion: ->
-      App.navigationRegion.show @view
+    show: ->
+      @regionView.show @view
+
+    createTreeView: (collection) ->
+      new List.TreeView { "collection": collection }
 
     changeRoute: (fragments) ->
       f = 0;
       i = 0;
       fragment;
       tree = @treeNodes;
-      @newtree = new App.Entities.Collection
+      newtree = new App.Entities.Collection
       node = tree #so pick up first fragment
 
       while node
@@ -27,14 +32,15 @@
          if !node
            break;
 
-         @newtree.add node
-         #console.log node
+         newtree.add node
 
          if !node.nodes
            break;
          node = node.nodes
 
-      if(@newtree.length)
-        @view.collection = @newtree
-        @view.render()
+
+      if(newtree.length)
+        # create a new tree view
+        @view = @createTreeView newtree
+        @show()
 
