@@ -14,7 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require underscore
-//= require TweenMax.min
+//# require TweenMax.min
 //= require backbone-min
 //= require backbone.marionette
 //= require_tree ./backbone/config

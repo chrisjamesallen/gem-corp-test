@@ -7,15 +7,20 @@
       ":s1": "route"
       ".*": "route"
 
-  API =
-    route: ->
-     console.log('route ->', arguments) #looking at argument lenght we can determine section to grab
-     Navigation.List.Controller.changeRoute arguments
-     #most basic, take the fragments and send to navigation controller
 
-  # Add any Module Vents here...
+  Navigation.controller =
+    API:
+      route: ->
+        console.log('route ->', arguments)
+        Navigation.List.Controller.changeRoute arguments
+
+    start: ->
+      new Navigation.Router
+        controller: @API
+      Navigation.List.Controller.createNavigation()
+
 
   Navigation.on "start", ->
-    new Navigation.Router
-      controller: API
-    Navigation.List.Controller.createNavigation()
+    Navigation.controller.start()
+
+

@@ -2,29 +2,22 @@
 
   List.Controller =
     createNavigation: ->
-      @data = App.request "navigation:entities"
-      @navLayout = @getNavigationLayout()
-      @addToAppRegion()
+      @treeNodes = App.request "navigation:entities"
+      @view = new List.TreeRoot { collection: @treeNodes }
+      window.controller = @
+      @showAsAppRegion()
 
-    getNavigationLayout: ->
-      new List.Layout
-
-    addToAppRegion: ->
-      App.navigationRegion.show @navLayout
+    showAsAppRegion: ->
+      App.navigationRegion.show @view
 
     changeRoute: (fragments) ->
-      # eg [a,b] check navView for regiions: region_one ? a region_two? b
-      # check whats available in
 
-      # layout,
-      # check how many levels to rerender
-      for fragment, i in fragments
-        region = @navLayout.getRegionLevel(i)
-        console.log i
-        #if(region.name != fragment )
-          # create new region and show region
-          #region.setName fragment
 
-      #perform a loop and break out if at end or found something new
 
-      #if route is different, then renderer the section level thats appropriate
+#var tree = new TreeNodeCollection(treeData);
+#var treeView = new TreeRoot({
+#  collection: tree
+#});
+
+#treeView.render();
+#$("#tree").html(treeView.el);
