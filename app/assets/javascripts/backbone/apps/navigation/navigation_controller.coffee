@@ -3,16 +3,14 @@
 
   Navigation.controller =
     start: ->
-      new Navigation.Router {controller: @API}
+#      new Navigation.Router {controller: Navigation.controller.API }       #omited for now
+      App.vent.on "route:change", _.bind(@route, @)
       Navigation.List.Controller.createNavigation()
+
+    route:(tree) ->
+      Navigation.List.Controller.changeRoute arguments
 
     API:
       route: ->
         console.log('route ->', arguments)
         Navigation.List.Controller.changeRoute arguments
-
-
-  Navigation.on "start", ->
-    Navigation.controller.start()
-
-

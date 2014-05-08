@@ -10,3 +10,6 @@
       ".*": "route"
 
 
+
+  Navigation.on "start", ->
+    Navigation.controller.start()

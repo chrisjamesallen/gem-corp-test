@@ -2,15 +2,31 @@
 
   `_.mixin(_.str.exports());`
 
+
+  class Router extends Marionette.AppRouter
+    appRoutes:
+      "*path": "route"
+
+
+
+  API = {
+    route: (url) ->
+      App.vent.trigger "route:change", _.ltrim(url).split('/')
+  }
+
+
   App = new Marionette.Application();
+
+  App.router = new Router {controller: API }
 
   App.addRegions
     navigationRegion: "#Navigation"
-    pageRegion: "#Page"
+    pageRegion: "#Pages"
     footerRegion: "#Footer"
 
   App.addInitializer ->
     App.module("Navigation").start()
+    App.module("Pages").start()
 
   App.on "initialize:after", (options) ->
     if Backbone.history
