@@ -1,9 +1,10 @@
 @App.module "Entities", (Entities, App, Backbone, Marionette, $, _) ->
 
+  # API
 
   API =
     getNavigationData: ->
-      new Entities.TreeNodeCollection window.data
+      new Entities.TreeNode window.data
 
   # Set Handlers
 
@@ -21,5 +22,16 @@
         @nodes = new Entities.TreeNodeCollection nodes
         @unset "nodes"
 
+    resetHighlights: ()->
+      nodes = @nodes
+      recursive = (node, index, items) ->
+        node.set('highlight',false)
+        if node.get('nodes')
+          node.get('nodes').each recursive
+
+      @nodes.each recursive
+
+
   class Entities.TreeNodeCollection extends Entities.Collection
     model: Entities.TreeNode
+

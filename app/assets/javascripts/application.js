@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require underscore
+//= require underscore.string
 //# require TweenMax.min
 //= require backbone-min
 //= require backbone.marionette

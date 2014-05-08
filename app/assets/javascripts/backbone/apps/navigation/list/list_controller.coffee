@@ -2,45 +2,44 @@
 
   List.Controller =
     createNavigation: ->
-      @treeNodes = App.request "navigation:entities"
+      @treeNode = App.request("navigation:entities")
       @regionView = new List.TreeRegion
-      window.controller = @
       App.navigationRegion = @regionView
-      @view = @createTreeView @treeNodes
-      @show()
-
-    show: ->
-      @regionView.show @view
-
-    createTreeView: (collection) ->
-      new List.TreeView { "collection": collection }
+      @view = new List.TreeView { "model": @treeNode }
+      @regionView.swap @view
+      window.controller = @
 
     changeRoute: (fragments) ->
       f = 0;
       i = 0;
-      fragment;
-      tree = @treeNodes;
+      fragment = "";
+      @treeNode.resetHighlights()
+      tree = @treeNode;
       newtree = new App.Entities.Collection
-      node = tree #so pick up first fragment
+      newtree.add tree
+      leaf = tree.nodes #so pick up first fragment
+      if _.isEmpty(fragments)
+        newtree.add @treeNode.models
+        leaf = false
 
-      while node
-         fragment = fragments[f++]
-         if !fragment
+      while leaf
+         fragment += fragments[f++] + "/"
+         console.log fragment
+         if !fragments[f-1]
            break;
-
-         node = node.findWhere({ nodeName: fragment })
-         if !node
+         leaf = leaf.findWhere({ slug: _.rtrim(fragment,"/") })
+         leaf.set('highlight', true);
+         if !leaf
            break;
-
-         newtree.add node
-
-         if !node.nodes
+         newtree.add leaf if fragments[f]
+         if !leaf.nodes
+           console.log "nono theres no nodes" , leaf
            break;
-         node = node.nodes
-
+         leaf = leaf.nodes #nodes become new leaf/branch
 
       if(newtree.length)
         # create a new tree view
-        @view = @createTreeView newtree
-        @show()
+        @nodes = newtree
+        @view = new List.TreeView { "collection": newtree }
+        @regionView.swap @view
 
