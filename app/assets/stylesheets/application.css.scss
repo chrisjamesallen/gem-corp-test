@@ -20,6 +20,18 @@
 }
 
 .page.basic{
+  width: 100%;
+  text-align:center;
+}
+
+.page.basic .content{
+  width: 100%;
+  text-align:center;
+  display:inline-block;
+  position:relative;
+}
+
+.page.basic .content .text{
   width:80%;
   margin: auto;
 }
