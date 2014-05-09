@@ -1,7 +1,8 @@
 @import "compass/reset";
 
 body{
-  font-family: "Garamond"
+  font-family: "Garamond";
+  overflow-y: scroll;
 }
 
 .region{
@@ -20,12 +21,20 @@ body{
 }
 
 .page{
-  @extend .region-view
+  @extend .region-view;
+  width:100%;
+  height:100%;
 }
 
 .page.basic{
   width: 100%;
   text-align:center;
+  background:red;
+}
+
+.page.video{
+  background:blue;
+
 }
 
 .page.basic .content{

@@ -1,18 +1,20 @@
 RegionAnimationExtend =
 
   # Public
+
   effectType: 'crossFade'
 
   swap: (view) ->
     if(@currentView and @currentView != view)
-      @setDeferrer_()
-      @newTween_()
+      @prepareTransition_()
+      # setup new 'buffer' view
       @bufferView = view
       @bufferView.render()
       Marionette.triggerMethod.call(@bufferView, "show");
       @bufferView.$el.insertAfter(@currentView.$el)
-      console.log "go for a swap",@effectType
-      $.when( (@transitionIn_ @bufferView), (@transitionOut_ @currentView)  ).then( _.bind(@swapCallbacks_.animationSuccess, this)  )
+      # animate
+      console.log "swapping a to b",@currentView.$el.attr('count'), @bufferView.$el.attr('count')
+      @animate_()
     else
       @show view
       @currentView = view
@@ -20,39 +22,34 @@ RegionAnimationExtend =
   setEffectType: (type) ->
     @effectType = if @effects_[type] then type else @defaultEffectType
 
+
   # Private
 
   defaultEffectType_: 'crossFade'
 
   effects_: {
 
-    crossFade: (transition, view, deferrer)->
-      if transition == 'in'
-        tween.from(view.$el, 2, { opacity:1 });
-        tween.call(  (=>deferrer.resolve()) )
-      else
-        tween.to(view.$el, 2, { opacity: 0 },"-=2");
-        tween.call( (=>deferrer.resolve()) )
+    crossFade: (inView, outView, deferrer, tween)->
+      tween.from(inView.$el, 2, { top: -inView.$el.height() });
+      tween.to(outView.$el, 2, { top: outView.$el.height() },"-=2");
+      tween.call( (=>deferrer.resolve()) )
 
-    slideUp: ()->
+    slideUp: (inView, outView, deferrer, tween)->
+      tween.from(inView.$el, 2, { top: inView.$el.height() });
+      tween.to(outView.$el, 2, { top: -outView.$el.height() },"-=2");
+      tween.call( (=>deferrer.resolve()) )
 
-    slideDown: (transition, view, deferrer, tween)->
-      if transition == 'in'
-        tween.from(view.$el, 2, { top: -view.$el.height() });
-        tween.call(  (=>deferrer.resolve()) )
-      else
-        tween.to(view.$el, 2, { top: view.$el.height() },"-=2");
-        tween.call( (=>deferrer.resolve()) )
+    slideDown: (inView, outView, deferrer, tween)->
+      tween.from(inView.$el, 2, { top: -inView.$el.height() });
+      tween.to(outView.$el, 2, { top: outView.$el.height() },"-=2");
+      tween.call( (=>deferrer.resolve()) )
 
   }
 
   promise_: null
 
-  promiseIn_: null
-
-  promiseOut_: null
-
   swapCallbacks_: {
+
     complete: ->
       @close()
       @attachView @bufferView
@@ -61,17 +58,29 @@ RegionAnimationExtend =
 
     stop: ->
       # cancel just one promise from the 'when' promise_ to prevent resolve...
-      @promiseIn_.reject()
       @close() #this deletes current view
       @attachView @bufferView #attach existing view
-      @removeAnimation_() #just to be safe
+      @killTween_() #just to be safe
       console.log 'swap stopped'
 
-    animationSuccess: ->
-      console.log 'animation success!'
-      @removeAnimation_() #just to be safe
-      @promise_.resolve()
   }
+
+  prepareTransition_:  ->
+    @setDeferrer_()
+    @setTween_()
+
+  animate_: ->
+    @setViewOverflow_()
+    @effects_[@effectType](@bufferView,@currentView, @promise_,@tween)
+
+  setViewOverflow_: ->
+    @currentView.overflow = @currentView.$el.css('overflow')
+    @bufferView.overflow = @bufferView.$el.css('overflow')
+    height = $(window).height()
+    @currentView.$el.height(height)
+    @bufferView.$el.height(height)
+    @bufferView.$el.css('overflow','hidden')
+    @currentView.$el.css('overflow','hidden')
 
   setDeferrer_: ->
     if @promise_ # reject any previous promise_
@@ -79,32 +88,17 @@ RegionAnimationExtend =
     # reconfigure new deferrer
     @promise_ = $.Deferred()
     @promise_.then( _.bind(@swapCallbacks_.complete, this) , _.bind(@swapCallbacks_.stop, this)  )
-    @promiseIn_ = $.Deferred()
-    @promiseOut_ = $.Deferred()
 
-  transitionIn_: (view) ->
-    defer = @promiseIn_
-    if view
-      @effects_[@effectType]('in', @bufferView, @promiseIn_, @tween)
-    else
-      defer.reject()
-    defer
-
-  transitionOut_: (view) ->
-    defer = @promiseOut_
-    if view
-      @effects_[@effectType]('out', @currentView, @promiseOut_, @tween)
-    else
-      defer.reject()
-    defer
-
-  removeAnimation_: () ->
-    if @tween then @tween.kill()
-
-  newTween_: () ->
+  setTween_: () ->
     if @tween then @tween.kill()
     @tween = new TimelineLite()
     window.tw = @tween
 
+  killTween_: () ->
+    if @tween then @tween.kill()
+
+  releaseViewOverflow_: ->
+    @bufferView.css('overflow',@bufferView.overflow)
+    @currentView.css('overflow',@currentView.overflow)
 
 Backbone.Marionette.Region.prototype extends RegionAnimationExtend

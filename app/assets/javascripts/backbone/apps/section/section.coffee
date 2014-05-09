@@ -4,7 +4,6 @@
     el: '#Pages'
     swapPageWithNode: (node) ->
       page = Sections.Pages.controller.createPageWithNode(node)
-      @setEffectType("slideDown")
       @swap page
 
     swapTypes:{

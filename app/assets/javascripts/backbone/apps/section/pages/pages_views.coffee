@@ -1,11 +1,9 @@
 @App.module "Sections.Pages", (Pages, App, Backbone, Marionette, $, _) ->
 
 
-
-
   class Pages.Basic extends Backbone.Marionette.Layout
     className: 'page basic'
-    template: 'pages/basic'
+    template: 'pages/dummy/basic'
     regions:{
       content: '.content'
     }
@@ -14,6 +12,10 @@
       content = new Pages.PageContent({model:@model})
       @content.show content
 
+
+  class Pages.Video extends Pages.Basic
+    className: 'page video'
+    template: 'pages/dummy/video'
 
   class Pages.PageContent extends Backbone.Marionette.ItemView
     template: "data/default"
