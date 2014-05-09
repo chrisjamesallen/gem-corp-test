@@ -26,7 +26,7 @@
         if !leaf.nodes
           break;
         leaf = leaf.nodes #nodes become new leaf/branch
-      console.log('node', node)
+#      console.log('node', node)
       node
 
 

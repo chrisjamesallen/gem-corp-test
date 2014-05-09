@@ -3,4 +3,4 @@
   #Definitions...
 
   Navigation.on "start", ->
-    Navigation.controller.start()
+    #Navigation.controller.start()

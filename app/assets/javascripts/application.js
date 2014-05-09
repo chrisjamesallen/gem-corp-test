@@ -13,7 +13,7 @@
 //= require jquery
 //= require underscore
 //= require underscore.string
-//# require TweenMax.min
+//= require TweenMax.min
 //= require backbone-min
 //= require backbone.marionette
 //= require_tree ./backbone/config

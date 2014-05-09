@@ -24,7 +24,7 @@
 
       while leaf
          fragment += fragments[f++] + "/"
-         console.log fragment
+         #console.log fragment
          leaf = leaf.findWhere({ slug: _.rtrim(fragment,"/") })
          if !leaf
            break;
@@ -32,7 +32,7 @@
          if !fragments[f]
            # check if fragment has any child nodes
            if leaf.nodes
-             console.log "redirecting to child node", leaf.nodes.at(0).get('slug')
+             #console.log "redirecting to child node", leaf.nodes.at(0).get('slug')
              newtree = []
              Backbone.history.navigate  leaf.nodes.at(0).get('slug'), {trigger:true}
              break;
@@ -40,7 +40,7 @@
 
          newtree.add leaf if fragments[f]
          if !leaf.nodes
-           console.log "nono theres no nodes" , leaf
+           #console.log "nono theres no nodes" , leaf
            break;
          leaf = leaf.nodes #nodes become new leaf/branch
 
@@ -48,6 +48,6 @@
         # create a new tree view
         @nodes = newtree
         @view = new List.TreeView { "collection": newtree }
-        console.log "swap", fragments
+        #console.log "swap", fragments
         @regionView.swap @view
 

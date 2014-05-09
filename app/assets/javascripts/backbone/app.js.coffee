@@ -24,7 +24,7 @@
     footerRegion: "#Footer"
 
   App.addInitializer ->
-    App.module("Navigation").start()
+    #App.module("Navigation").start()
     App.module("Pages").start()
 
   App.on "initialize:after", (options) ->

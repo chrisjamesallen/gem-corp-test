@@ -1,5 +1,9 @@
 @import "compass/reset";
 
+body{
+  font-family: "Garamond"
+}
+
 .region{
   position: absolute;
 }
@@ -34,4 +38,5 @@
 .page.basic .content .text{
   width:80%;
   margin: auto;
+  white-space: pre-line;
 }
