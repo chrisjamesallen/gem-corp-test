@@ -6,5 +6,11 @@
     template: "pages/main_region",
     el: '#Pages'
 
+
+  class Pages.Basic extends Backbone.Marionette.ItemView
+    template: "data/default"
+    className: 'page basic'
+
+
   Pages.on "start", ->
     Pages.controller.start()

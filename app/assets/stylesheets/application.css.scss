@@ -13,20 +13,26 @@
  */
 
 
-.large-text{
-  font-size: 20px;
-}
-
-.large-text.centered{
-  text-align:center;
-  padding-top: 30%;
-}
-
-.full-screen{
+.region{
   position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  background-color:black;
+}
+
+.region-view{
+  position: absolute;
+}
+
+#Navigation{
+  display: none;
+}
+
+#Pages{
+}
+
+.page{
+  @extend .region-view
+}
+
+.page.basic{
+  width:80%;
+  margin: auto;
 }

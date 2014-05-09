@@ -2,7 +2,7 @@
 
   List.Controller =
     createNavigation: ->
-      @treeNode = App.request("navigation:entities")
+      @treeNode = App.request("tree:entities")
       @regionView = new List.TreeRegion
       App.navigationRegion = @regionView
       @view = new List.TreeView { "model": @treeNode }

@@ -8,17 +8,16 @@
       "*path": "route"
 
 
-
   API = {
     route: (url) ->
-      App.vent.trigger "route:change", _.ltrim(url).split('/')
+      routeTree = _.ltrim(url).split('/')
+      @treeNode = @treeNode ? App.request("tree:entities")
+      @treeNode.pickNode(routeTree)
+      App.vent.trigger("route:change", routeTree, @treeNode)
   }
 
-
   App = new Marionette.Application();
-
   App.router = new Router {controller: API }
-
   App.addRegions
     navigationRegion: "#Navigation"
     pageRegion: "#Pages"
